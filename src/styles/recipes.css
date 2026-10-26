@@ -1,22 +1,56 @@
-/* Bodyworks — one dark theme shared with the landing page: warm charcoal, gold accent, Anton headings. */
+/* Bodyworks — landing-page palette (warm charcoal / cream, gold accent) on the original layout */
 
 html, body { margin: 0; }
-html { background: #100e0b; color-scheme: dark; }
+html { background: #f6efe0; color-scheme: light; }
+html[data-theme="dark"] { background: #100e0b; color-scheme: dark; }
 
+/* Two themes with the landing page's palette: dark = warm charcoal + gold, light = warm cream + gold.
+   <html data-theme> is set before first paint by a tiny inline script in every page <head>;
+   the toggle in the account menu flips it and remembers the choice in localStorage. */
 .rb-page {
+  --bg: #f6efe0;
+  --paper: #fffaf0;       /* card / panel surface */
+  --raise: #f1e6cc;       /* hover / raised surface */
+  --ink: #2a2113;
+  --sub: #6e604a;
+  --edge: #e6d9b9;
+  --rule: #d4c298;
+  --cta: #a86f0a;
+  --on-cta: #fffaf0;
+  --cta-hover: #8a5a06;
+  --warn: #b4532a;
+  --rec: #c93a2b;         /* "recording" red */
+  --star: #d79a12;
+  --star-off: #e3d6b6;
+  --media-bg: #efe3c4;
+  --ph-ink: rgba(42, 33, 19, 0.3);
+  --slot-b: #ffefc2; --slot-l: #e3efc9; --slot-d: #f6dcc0; --slot-s: #fcdad0;
+  --slot-ink: #2a2113;
+  --slot-mix: 100%;
+  --glass: rgba(255, 250, 240, 0.68);
+  --glass-edge: rgba(168, 111, 10, 0.22);
+  --shadow: 0 10px 28px -16px rgba(120, 80, 10, 0.5);
+  --shadow-lg: 0 30px 80px -24px rgba(60, 40, 10, 0.5);
+  --scrim: rgba(42, 33, 19, 0.5);
+  --font-head: "Manrope", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+  position: relative;
+  isolation: isolate;
+}
+html[data-theme="dark"] .rb-card-placeholder { background: var(--tone, #5a3d12); }
+html[data-theme="dark"] .rb-page {
   --bg: #100e0b;
-  --paper: #1d1913;       /* card / panel surface */
-  --raise: #292117;       /* hover / raised surface */
+  --paper: #1d1913;
+  --raise: #292117;
   --ink: #f7f0e2;
   --sub: #b9ad98;
   --edge: rgba(247, 240, 226, 0.14);
-  --rule: rgba(247, 240, 226, 0.24);
-  --gold: #edb843;
+  --rule: rgba(247, 240, 226, 0.25);
   --cta: #edb843;
   --on-cta: #100e0b;
   --cta-hover: #ffce67;
   --warn: #f0a78a;
-  --rec: #ff7a6b;         /* "recording" red */
+  --rec: #ff7a6b;
   --star: #edb843;
   --star-off: #3d3427;
   --media-bg: #17130d;
@@ -24,21 +58,11 @@ html { background: #100e0b; color-scheme: dark; }
   --slot-b: #edb843; --slot-l: #b9c98a; --slot-d: #d9a57a; --slot-s: #e8a08a;
   --slot-ink: #100e0b;
   --slot-mix: 24%;
+  --glass: rgba(29, 25, 19, 0.58);
+  --glass-edge: rgba(237, 184, 67, 0.26);
   --shadow: 0 12px 30px -14px rgba(0, 0, 0, 0.65);
   --shadow-lg: 0 30px 80px -20px rgba(0, 0, 0, 0.85);
-  --scrim: rgba(8, 7, 5, 0.78);
-  --font-head: "Anton", Impact, sans-serif;
-  --font-body: "Manrope", system-ui, sans-serif;
-  position: relative;
-  isolation: isolate;
-}
-
-/* soft gold glow + print grain behind every page, like the landing page */
-.rb-page::before {
-  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E") 0 0 / 180px 180px,
-    radial-gradient(ellipse at 50% 0%, rgba(237, 184, 67, 0.1), transparent 46%);
+  --scrim: rgba(8, 7, 5, 0.74);
 }
 
 .rb-page {
@@ -416,46 +440,153 @@ html { background: #100e0b; color-scheme: dark; }
 .mp-clearday:hover { border-color: var(--warn); color: var(--warn); }
 .mp-dayhead.today .mp-clearday { border-color: color-mix(in srgb, var(--on-cta) 40%, transparent); color: var(--on-cta); }
 
+
 /* ==========================================================
-   Landing-page look: sharp gold-edged panels, tracked caps
+   Landing-page colour glow + a little glass
    ========================================================== */
-.rb-page .rb-card, .rb-page .mp-card, .rb-page .mp-box, .rb-page .rb-modal,
-.rb-page .af-card, .rb-page .rf, .rb-page .wk-box {
-  border-radius: 7px; border-color: rgba(237, 184, 67, 0.32);
+/* soft gold light behind everything so the glass has something to blur */
+.rb-page { background:
+  radial-gradient(ellipse 60% 40% at 50% 0%, rgba(237, 184, 67, 0.10), transparent 70%),
+  radial-gradient(ellipse 40% 35% at 100% 55%, rgba(237, 184, 67, 0.06), transparent 70%),
+  radial-gradient(ellipse 40% 35% at 0% 80%, rgba(237, 140, 67, 0.05), transparent 70%),
+  var(--bg);
+  background-attachment: fixed;
 }
-.rb-page .rb-card { padding: 6px; transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease; }
-.rb-page .rb-card:hover {
-  transform: translateY(-4px); border-color: var(--gold);
-  box-shadow: inset 0 0 0 1px rgba(237, 184, 67, 0.3), 0 0 30px rgba(237, 184, 67, 0.1), 0 22px 60px rgba(0, 0, 0, 0.45);
+html:not([data-theme="dark"]) .rb-page { background:
+  radial-gradient(ellipse 60% 40% at 50% 0%, rgba(215, 154, 18, 0.14), transparent 70%),
+  radial-gradient(ellipse 40% 35% at 100% 55%, rgba(215, 154, 18, 0.08), transparent 70%),
+  var(--bg);
+  background-attachment: fixed;
 }
-.rb-page .rb-card-media { border-radius: 3px; }
-.rb-page .rb-card-cuisine, .rb-page .rb-chip, .rb-page .rb-suggest button, .rb-page .rb-add-btn { border-radius: 2px; }
-.rb-page .rb-chip, .rb-page .rb-card-cuisine { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.66rem; font-weight: 800; }
-.rb-page .rb-search, .rb-page .rb-ing-field { border-radius: 4px; }
 
-.rb-page .rb-title { font-size: clamp(3.2rem, 7vw, 5.6rem); line-height: 0.9; text-shadow: 0 4px 32px rgba(0, 0, 0, 0.35); }
-.rb-page .rb-lede, .rb-page .rb-field-label { letter-spacing: 0.16em; text-transform: uppercase; font-size: 0.7rem; font-weight: 700; }
-.rb-page .rb-field-label { color: var(--gold); letter-spacing: 0.2em; font-weight: 800; }
-
-/* buttons: tracked caps, tiny radius, gold fill for the main action */
-.rb-page .rb-btn {
-  border-radius: 3px; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; font-weight: 800;
-  padding: 0.65rem 1.1rem; border-color: rgba(247, 240, 226, 0.3);
-  transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+/* glass: top bars, tab bar, menus, modal, side boxes */
+.rb-topbar, .pf-topbar, .mp-tabbar {
+  background: var(--glass); -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3);
+  border-bottom: 1px solid var(--glass-edge);
 }
-.rb-page .rb-btn:hover:not(:disabled) { border-color: var(--gold); }
-.rb-page .rb-btn-solid:hover:not(:disabled) { transform: translateY(-1px); }
-
-.rb-page .rb-nav a:hover { color: var(--gold); }
-.rb-page .rb-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--gold); }
-.rb-page .rb-menu { border-radius: 4px; border-color: rgba(237, 184, 67, 0.32); }
-
-/* gold keylines instead of plain rules on section headings */
-.rb-page .rb-filter h2 { border-bottom-color: rgba(237, 184, 67, 0.4); }
-.rb-page .rb-filter h3 { color: var(--gold); font-family: var(--font-body); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.2em; }
-.rb-page .rb-steps li::before { font-weight: 400; }
-.rb-page .mp-dayhead b, .rb-page .mp-slot-label { font-weight: 400; }
-
-@media (prefers-reduced-motion: reduce) {
-  .rb-page .rb-card, .rb-page .rb-btn { transition: none; }
+.rb-menu, .rb-modal, .mp-box, .wk-box {
+  background: var(--glass); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3);
+  border-color: var(--glass-edge);
 }
+.rb-overlay { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.rb-tabs, .mp-tabs { background: var(--glass); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-color: var(--glass-edge); }
+
+/* gold touches that echo the landing page */
+.rb-card:hover { border-color: var(--cta); box-shadow: 0 0 28px -6px rgba(237, 184, 67, 0.25), var(--shadow); }
+.rb-wordmark, .rb-logo { color: var(--ink) !important; }
+.rb-wordmark::after, .rb-logo::after { content: "."; color: var(--cta); }
+
+/* ---------- recipes toolbar search (sits left of Filters) ---------- */
+.rb-toolbar-search {
+  position: relative; display: flex; align-items: center; flex: 1 1 260px; min-width: 200px; max-width: 360px;
+}
+.rb-toolbar-search svg { position: absolute; left: 0.95rem; color: var(--sub); pointer-events: none; }
+.rb-toolbar-search input {
+  width: 100%; box-sizing: border-box; padding: 0.58rem 1rem 0.58rem 2.5rem; border-radius: 999px;
+  background: var(--glass); color: var(--ink); border: 1px solid var(--rule); font: 500 0.92rem var(--font-body);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+}
+.rb-toolbar-search input::placeholder { color: var(--sub); }
+.rb-toolbar-search input:focus { outline: 2px solid var(--cta); outline-offset: 1px; border-color: var(--cta); }
+@media (max-width: 760px) {
+  .mp-tabbar-actions { width: 100%; flex-wrap: wrap; }
+  .rb-toolbar-search { flex: 1 1 100%; max-width: none; order: -1; }
+}
+
+/* ---------- recipe dialog: labelled tabs + back/next instead of tiny dots ---------- */
+.rb-modal { max-width: 520px; height: min(640px, 90vh); }
+.rb-modal-head h2 { font-size: 1.6rem; }
+.rb-modal-tabs {
+  display: flex; gap: 0.25rem; margin: 0.9rem 0 0; padding: 4px; border-radius: 999px;
+  background: var(--bg); border: 1px solid var(--edge);
+}
+.rb-modal-tabs button {
+  flex: 1; border: none; background: none; cursor: pointer; color: var(--sub); border-radius: 999px;
+  font: 700 0.8rem var(--font-body); padding: 0.5rem 0.3rem; white-space: nowrap; transition: background 160ms, color 160ms;
+}
+.rb-modal-tabs button:hover { color: var(--ink); }
+.rb-modal-tabs button.on { background: var(--cta); color: var(--on-cta); }
+.rb-modal-nav { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; padding-top: 0.2rem; }
+.rb-modal-nav .rb-btn { min-width: 8.5rem; padding: 0.7rem 1rem; }
+.rb-modal-count { color: var(--sub); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; }
+@media (max-width: 480px) {
+  .rb-overlay { padding: 0.6rem; }
+  .rb-modal { padding: 1.2rem 1rem 0.9rem; }
+  .rb-modal-tabs button { font-size: 0.72rem; }
+  .rb-modal-nav .rb-btn { min-width: 0; flex: 1; }
+  .rb-modal-count { display: none; }
+}
+
+/* ---------- card ⋯ menu ---------- */
+.rb-card { position: relative; }
+.rb-card.has-menu .rb-card-cuisine { right: 3.9rem; }
+.rb-cardmenu { position: absolute; top: calc(8px + 0.65rem); right: calc(8px + 0.65rem); z-index: 4; }
+.rb-cardmenu-btn {
+  width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; color: var(--ink);
+  border-radius: 50%; border: 1px solid var(--glass-edge); background: var(--glass);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: border-color 160ms, color 160ms, background 160ms;
+}
+.rb-cardmenu-btn:hover, .rb-cardmenu-btn[aria-expanded="true"] { border-color: var(--cta); color: var(--cta); }
+.rb-cardmenu-list {
+  position: absolute; top: calc(100% + 6px); right: 0; min-width: 170px; padding: 0.35rem;
+  display: flex; flex-direction: column; border-radius: 14px; border: 1px solid var(--glass-edge);
+  background: var(--paper); box-shadow: var(--shadow-lg);
+}
+.rb-cardmenu-list a, .rb-cardmenu-list button {
+  padding: 0.55rem 0.75rem; text-align: left; text-decoration: none; border: none; background: none; cursor: pointer;
+  border-radius: 8px; color: var(--ink) !important; font: 600 0.9rem var(--font-body);
+}
+.rb-cardmenu-list a:hover, .rb-cardmenu-list button:hover { background: var(--raise); }
+.rb-cardmenu-list .danger { color: var(--warn) !important; }
+
+/* ---------- delete confirmation ---------- */
+.rb-confirm {
+  width: 100%; max-width: 400px; box-sizing: border-box; padding: 1.5rem 1.6rem 1.3rem; color: var(--ink);
+  background: var(--glass); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-edge); border-radius: 22px; box-shadow: var(--shadow-lg);
+}
+.rb-confirm h2 { margin: 0 0 0.5rem; font-size: 1.4rem; }
+.rb-confirm p { margin: 0 0 1.2rem; color: var(--sub); }
+.rb-confirm-actions { display: flex; justify-content: flex-end; gap: 0.6rem; }
+.rb-page .rb-btn.rb-btn-danger, .rb-overlay .rb-btn.rb-btn-danger { background: var(--warn); border-color: var(--warn); color: #1a0d07 !important; }
+.rb-page .rb-btn.rb-btn-danger:hover:not(:disabled), .rb-overlay .rb-btn.rb-btn-danger:hover:not(:disabled) { filter: brightness(1.08); background: var(--warn); border-color: var(--warn); }
+
+/* the top bar's blur makes it its own layer; lift it so the account menu opens above the sticky tab bar */
+.rb-topbar, .pf-topbar { position: relative; z-index: 40; }
+
+/* Recipes page background: food-only illustration (scoped so workouts/profile keep theirs) */
+html:not([data-theme="dark"]) .rb-page.rb-recipes {
+  background: url("/bg-food.jpg") center / cover no-repeat fixed, #fbe3a6;
+}
+html[data-theme="dark"] .rb-page.rb-recipes {
+  background: linear-gradient(rgba(36, 13, 16, 0.86), rgba(36, 13, 16, 0.86)), url("/bg-food.jpg") center / cover no-repeat fixed, #240d10;
+}
+
+html[data-palette="night"] .rb-page.rb-recipes { background: url("/bg-night.jpg") center / cover no-repeat fixed, #1f262b; }
+
+/* ---------- recipes toolbar: tabs left, search + filters right, aligned to the card grid ---------- */
+.rb-page.rb-recipes .rb-bar { padding-top: 1.5rem; padding-bottom: 0.9rem; }
+.rb-page.rb-recipes .mp-tabbar {
+  position: static; max-width: none; margin: 0; padding: 0; gap: 0.75rem;
+  background: transparent; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.rb-page.rb-recipes .mp-tabs {
+  height: 48px; box-sizing: border-box; align-items: stretch; padding: 4px;
+  background: var(--paper); border: 2px solid var(--line); box-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.rb-page.rb-recipes .mp-tabs button { padding: 0 1.3rem; font-size: 0.92rem; }
+.rb-page.rb-recipes .mp-tabbar-actions { gap: 0.6rem; flex: 1 1 auto; justify-content: flex-end; }
+.rb-page.rb-recipes .rb-toolbar-search { flex: 0 1 380px; }
+.rb-page.rb-recipes .rb-toolbar-search svg { z-index: 1; left: 1.1rem; color: var(--ink); }
+.rb-page.rb-recipes .rb-toolbar-search input {
+  height: 48px; padding: 0 1.1rem 0 2.8rem; background: var(--paper); border: 2px solid var(--line);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.rb-page.rb-recipes .rb-filter-btn { height: 48px; box-sizing: border-box; padding: 0 1.3rem; background: var(--paper); }
+@media (max-width: 760px) {
+  .rb-page.rb-recipes .rb-bar { padding-top: 1rem; }
+  .rb-page.rb-recipes .mp-tabbar-actions { flex: 1 1 100%; }
+  .rb-page.rb-recipes .rb-toolbar-search { flex: 1 1 0; }
+}
+.rb-page.rb-recipes .mp-tabbar-actions > a.rb-btn { height: 48px; box-sizing: border-box; display: inline-flex; align-items: center; padding: 0 1.3rem; background: var(--paper); }
