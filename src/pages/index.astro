@@ -32,5 +32,75 @@ import "../styles/sunrise.css";
         <footer class="lp-footer">Move with purpose. Fuel your everyday.</footer>
       </main>
     </div>
+
+    <script>
+      const page = document.querySelector<HTMLElement>(".lp");
+      const cards = document.querySelectorAll<HTMLAnchorElement>(".lp-choice");
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+      if (page && !reduced && finePointer) {
+        // --- smooth cursor spotlight ---
+        let tx = innerWidth / 2, ty = innerHeight * 0.4, cx = tx, cy = ty, running = false;
+        const follow = () => {
+          cx += (tx - cx) * 0.12;
+          cy += (ty - cy) * 0.12;
+          page.style.setProperty("--sx", `${cx}px`);
+          page.style.setProperty("--sy", `${cy}px`);
+          if (Math.abs(tx - cx) > 0.5 || Math.abs(ty - cy) > 0.5) requestAnimationFrame(follow);
+          else running = false;
+        };
+        addEventListener("pointermove", (e) => {
+          tx = e.clientX;
+          ty = e.clientY;
+          page.classList.add("has-pointer");
+          if (!running) { running = true; requestAnimationFrame(follow); }
+        });
+        document.documentElement.addEventListener("pointerleave", () => page.classList.remove("has-pointer"));
+
+        // --- 3D tilt, parallax photo and glare per card ---
+        cards.forEach((card) => {
+          let frame = 0;
+          card.addEventListener("pointermove", (e) => {
+            cancelAnimationFrame(frame);
+            frame = requestAnimationFrame(() => {
+              const r = card.getBoundingClientRect();
+              const px = (e.clientX - r.left) / r.width;
+              const py = (e.clientY - r.top) / r.height;
+              card.classList.add("is-tracking");
+              card.style.setProperty("--rx", `${((0.5 - py) * 7).toFixed(2)}deg`);
+              card.style.setProperty("--ry", `${((px - 0.5) * 9).toFixed(2)}deg`);
+              card.style.setProperty("--tx", ((0.5 - px) * 26).toFixed(1));
+              card.style.setProperty("--ty", ((0.5 - py) * 18).toFixed(1));
+              card.style.setProperty("--mx", `${(px * 100).toFixed(1)}%`);
+              card.style.setProperty("--my", `${(py * 100).toFixed(1)}%`);
+            });
+          });
+          card.addEventListener("pointerleave", () => {
+            cancelAnimationFrame(frame);
+            card.classList.remove("is-tracking");
+            ["--rx", "--ry", "--tx", "--ty"].forEach((p) => card.style.removeProperty(p));
+          });
+        });
+      }
+
+      // --- gold wipe before navigating ---
+      if (page && !reduced) {
+        cards.forEach((card) => {
+          card.addEventListener("click", (e) => {
+            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            e.preventDefault();
+            page.style.setProperty("--wx", `${e.clientX}px`);
+            page.style.setProperty("--wy", `${e.clientY}px`);
+            page.classList.add("is-leaving");
+            setTimeout(() => { location.href = card.href; }, 560);
+          });
+        });
+        // coming back with the back button should not leave the wipe on screen
+        addEventListener("pageshow", (e) => {
+          if (e.persisted) page.classList.remove("is-leaving");
+        });
+      }
+    </script>
   </body>
 </html>

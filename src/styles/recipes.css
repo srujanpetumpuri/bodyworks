@@ -34,6 +34,8 @@ html[data-theme="dark"] { background: #100e0b; color-scheme: dark; }
   --scrim: rgba(42, 33, 19, 0.5);
   --font-head: "Manrope", system-ui, sans-serif;
   --font-body: "Manrope", system-ui, sans-serif;
+  position: relative;
+  isolation: isolate;
 }
 html[data-theme="dark"] .rb-card-placeholder { background: var(--tone, #5a3d12); }
 html[data-theme="dark"] .rb-page {
@@ -69,22 +71,26 @@ html[data-theme="dark"] .rb-page {
 }
 .rb-page a { color: var(--cta); }
 .rb-page h1, .rb-page h2, .rb-page h3 {
-  font-family: var(--font-head); font-weight: 800; letter-spacing: -0.02em;
+  font-family: var(--font-head); font-weight: 400; letter-spacing: 0.005em; text-transform: uppercase;
 }
 .rb-page :focus-visible { outline: 3px solid var(--cta); outline-offset: 2px; }
 
 /* ---------- top bar ---------- */
 .rb-topbar, .pf-topbar {
   display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
-  padding: 0.9rem 2rem; border-bottom: 1px solid var(--edge); background: var(--bg);
+  padding: 0.85rem 2rem; min-height: 66px; box-sizing: border-box;
+  border-bottom: 1px solid rgba(247, 240, 226, 0.1); background: rgba(16, 14, 11, 0.82);
+  backdrop-filter: blur(8px);
 }
 .rb-wordmark, .rb-logo {
-  font: 800 1.5rem/1 var(--font-head); letter-spacing: -0.03em;
-  color: var(--cta) !important; text-decoration: none; display: inline-flex; align-items: center;
+  font: 400 1.45rem/1 var(--font-head); letter-spacing: 0.055em; text-transform: uppercase;
+  color: var(--ink) !important; text-decoration: none; display: inline-flex; align-items: center;
 }
+.rb-wordmark span, .rb-logo span { color: var(--gold); }
 .rb-nav { display: flex; gap: 0.3rem; flex: 1; }
 .rb-nav a {
-  padding: 0.5rem 0.9rem; text-decoration: none; font-weight: 600; color: var(--sub); border-bottom: 2px solid transparent;
+  padding: 0.5rem 0.9rem; text-decoration: none; font-weight: 800; font-size: 0.7rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--sub); border-bottom: 2px solid transparent; transition: color 200ms ease;
 }
 .rb-nav a:hover { color: var(--ink); }
 .rb-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--cta); }
@@ -171,8 +177,8 @@ html[data-theme="dark"] .rb-page {
 .rb-card-media > img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .rb-card-placeholder {
   width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-  background: var(--tone-soft, var(--media-bg));
-  color: var(--ph-ink); font: 800 4rem var(--font-head); text-transform: uppercase;
+  background: var(--tone, var(--media-bg));
+  color: var(--ph-ink); font: 400 4rem var(--font-head); text-transform: uppercase;
 }
 .rb-card-cuisine {
   position: absolute; top: 0.75rem; right: 0.75rem; background: var(--paper); color: var(--cta);
